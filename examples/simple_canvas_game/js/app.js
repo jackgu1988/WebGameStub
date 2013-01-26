@@ -25,13 +25,13 @@ heroImage.onload = function () {
 };
 heroImage.src = "img/hero.png";
 
-// Monster image
-var monsterReady = false;
-var monsterImage = new Image();
-monsterImage.onload = function () {
-	monsterReady = true;
+// Food image
+var foodReady = false;
+var foodImage = new Image();
+foodImage.onload = function () {
+	foodReady = true;
 };
-monsterImage.src = "img/monster.png";
+foodImage.src = "img/food.png";
 
 // Game objects
 var hero = {
@@ -39,8 +39,12 @@ var hero = {
 	weed: 32,
 	high: 32
 };
-var monster = {};
-var monstersCaught = 0;
+var food = {
+	speed: 128, // movement in pixels per second
+	weed: 32,
+	high: 32
+};
+var foodsCaught = 0;
 
 // Handle keyboard controls
 var keysDown = {};
@@ -53,14 +57,14 @@ addEventListener("keyup", function (e) {
 	delete keysDown[e.keyCode];
 }, false);
 
-// Reset the game when the player catches a monster
+// Reset the game when the player catches a food
 var reset = function () {
 	hero.x = canvas.width / 2;
 	hero.y = canvas.height / 2;
 
-	// Throw the monster somewhere on the screen randomly
-	monster.x = 32 + (Math.random() * (canvas.width - 64));
-	monster.y = 32 + (Math.random() * (canvas.height - 64));
+	// Throw the food somewhere on the screen randomly
+	food.x = 32 + (Math.random() * (canvas.width - 64));
+	food.y = 32 + (Math.random() * (canvas.height - 64));
 };
 
 // Update game objects
@@ -74,10 +78,10 @@ var update = function (modifier) {
 	}
 	if (40 in keysDown) { // Player holding down
 		
-			if (hero.y <= canvas.height){
+			if (hero.y <= canvas.height - hero.high){
 				hero.y += hero.speed * modifier;
 			} else {
-				hero.y = canvas.height;
+				hero.y = canvas.height - hero.high;
 			}
 	}
 	if (37 in keysDown) { // Player holding left
@@ -88,21 +92,21 @@ var update = function (modifier) {
 		}
 	}
 	if (39 in keysDown) { // Player holding right
-		if (hero.x <= canvas.width){
+		if (hero.x <= canvas.width - hero.weed){
 			hero.x += hero.speed * modifier;
 		} else {
-			hero.x = canvas.width;
+			hero.x = canvas.width - hero.weed;
 		}
 	}
 
 	// Are they touching?
 	if (
-		hero.x <= (monster.x + 32)
-		&& monster.x <= (hero.x + 32)
-		&& hero.y <= (monster.y + 32)
-		&& monster.y <= (hero.y + 32)
+		hero.x <= (food.x + 32)
+		&& food.x <= (hero.x + 32)
+		&& hero.y <= (food.y + 32)
+		&& food.y <= (hero.y + 32)
 	) {
-		++monstersCaught;
+		++foodsCaught;
 		reset();
 	}
 };
@@ -117,8 +121,8 @@ var render = function () {
 		ctx.drawImage(heroImage, hero.x, hero.y);
 	}
 
-	if (monsterReady) {
-		ctx.drawImage(monsterImage, monster.x, monster.y);
+	if (foodReady) {
+		ctx.drawImage(foodImage, food.x, food.y);
 	}
 
 	// Score
@@ -126,7 +130,7 @@ var render = function () {
 	ctx.font = "24px Helvetica";
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
-	ctx.fillText("Goblins caught: " + monstersCaught, 32, 32);
+	ctx.fillText("Pizzas caught: " + foodsCaught, 32, 32);
 };
 
 // The main game loop
