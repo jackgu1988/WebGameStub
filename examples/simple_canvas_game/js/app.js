@@ -130,7 +130,15 @@ var render = function () {
 	ctx.font = "24px Helvetica";
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
+<<<<<<< HEAD
 	ctx.fillText("Foods caught: " + foodsCaught, 32, 32);
+=======
+<<<<<<< HEAD
+	ctx.fillText("Pizzas caught: " + foodsCaught, 32, 32);
+=======
+	ctx.fillText("Goblins caught: " + foodsCaught, 32, 32);
+>>>>>>> 2120eaab041c611deccc21483a2b9d740be25898
+>>>>>>> 1f11baaccd653622149158e96e3096c9c908f3f7
 };
 
 // The main game loop
