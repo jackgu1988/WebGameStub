@@ -5,8 +5,8 @@ requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimati
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 512;
-canvas.height = 480;
+canvas.width = 320;
+canvas.height = 450;
 document.body.appendChild(canvas);
 
 // Background image
@@ -35,7 +35,9 @@ monsterImage.src = "img/monster.png";
 
 // Game objects
 var hero = {
-	speed: 256 // movement in pixels per second
+	speed: 256, // movement in pixels per second
+	weed: 32,
+	high: 32
 };
 var monster = {};
 var monstersCaught = 0;
@@ -64,16 +66,33 @@ var reset = function () {
 // Update game objects
 var update = function (modifier) {
 	if (38 in keysDown) { // Player holding up
-		hero.y -= hero.speed * modifier;
+		if (hero.y > 0){
+			hero.y -= hero.speed * modifier;
+		} else {
+			hero.y = 0;
+		}
 	}
 	if (40 in keysDown) { // Player holding down
-		hero.y += hero.speed * modifier;
+		
+			if (hero.y <= canvas.height){
+				hero.y += hero.speed * modifier;
+			} else {
+				hero.y = canvas.height;
+			}
 	}
 	if (37 in keysDown) { // Player holding left
-		hero.x -= hero.speed * modifier;
+		if (hero.x > 0) {
+			hero.x -= hero.speed * modifier;
+		} else {
+			hero.x = 0;
+		}
 	}
 	if (39 in keysDown) { // Player holding right
-		hero.x += hero.speed * modifier;
+		if (hero.x <= canvas.width){
+			hero.x += hero.speed * modifier;
+		} else {
+			hero.x = canvas.width;
+		}
 	}
 
 	// Are they touching?
