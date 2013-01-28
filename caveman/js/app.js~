@@ -20,7 +20,6 @@ bgImage.onload = function () {
 };
 bgImage.src = "img/background.png";
 bgImage.style.width = canvas.width + "px";
-bgImage.style.height = canvas.height + "px";
 
 // Game over image
 var goReady = false;
